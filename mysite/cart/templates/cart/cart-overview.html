@@ -94,6 +94,13 @@
   <strong class="text-lg text-gray-900" id="total"
     >Total: ₹{{ cart.get_total_price}}</strong
   >
+  <div class="mt-4">
+    <a
+      href="{% url 'checkout' %}"
+      class="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-6 py-2 rounded-lg"
+      >Proceed to checkout</a
+    >
+  </div>
 </div>
 {% else %}
 <!--Empty Cart Message-->

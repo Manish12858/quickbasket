@@ -3,3 +3,5 @@
   {% csrf_token %} {{form}}
   <button type="submit">Login</button>
 </form>
+<p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+<p>New to QuickBasket? <a href="{% url 'register' %}">Create an account</a></p>

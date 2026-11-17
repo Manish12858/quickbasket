@@ -9,7 +9,7 @@
       integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U="
       crossorigin="anonymous"
     ></script>
-    <title>Document</title>
+    <title>QuickBasket</title>
   </head>
   <body>
     <!--Nav-->
@@ -30,7 +30,7 @@
 
       <!-- Navigation Links (Hidden on Mobile) -->
       <div class="hidden md:flex space-x-6 font-bold text-sm">
-        <a href="#" class="text-gray-700 hover:text-blue-600">Home</a>
+        <a href="{% url 'index' %}" class="text-gray-700 hover:text-blue-600">Home</a>
         <a href="#" class="text-gray-700 hover:text-blue-600">Shop</a>
         <a href="#" class="text-gray-700 hover:text-blue-600">About</a>
         <a href="#" class="text-gray-700 hover:text-blue-600">Contact</a>
@@ -41,12 +41,12 @@
       <!-- Icons -->
       <div class="flex items-center space-x-4 font-bold text-sm">
         <a href="#" class="text-gray-700 hover:text-blue-600"
-          >Sell On ShopMate</a
+          >Sell on QuickBasket</a
         >
         <a href="#" class="text-gray-700 hover:text-blue-600"
           >Track your order</a
         >
-        <a href="#" class="text-gray-700 hover:text-blue-600">USD</a>
+        <a href="#" class="text-gray-700 hover:text-blue-600">INR</a>
         <a href="#" class="text-gray-700 hover:text-blue-600">🇮🇳 India</a>
       </div>
     </nav>
@@ -60,9 +60,9 @@
           alt="Logo"
           class="h-10 w-10"
         /> -->
-        <span class="text-xl font-semibold text-gray-800 px-4"
-          >Shop<span class="text-white">Mate</span>
-        </span>
+        <a href="{% url 'index' %}" class="text-xl font-semibold text-gray-800 px-4"
+          >Quick<span class="text-white">Basket</span>
+        </a>
       </div>
 
       <!-- Navigation Links (Hidden on Mobile) -->
@@ -115,7 +115,7 @@
         </a>
 
         <!-- User -->
-        <a href="#" class="text-gray-600 hover:text-blue-600">👤</a>
+        <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" class="text-gray-600 hover:text-blue-600">👤</a>
 
         <!-- Hamburger Menu (Mobile) -->
         <button class="md:hidden text-gray-600 hover:text-blue-600">☰</button>

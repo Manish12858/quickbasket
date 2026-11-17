@@ -4,6 +4,9 @@
 <form action="">
   <h1>Complete your order</h1>
   <p>Please recheck your address on which the items would be shipped</p>
+  <p>
+    {% if address %}<a href="{% url 'add_address' %}">Edit address</a>{% else %}<a href="{% url 'add_address' %}">Add a shipping address</a>{% endif %}
+  </p>
   <label for="">Full Name</label>
   <input type="text" value="{{ address.full_name }}" name="" id="" />
   <div>

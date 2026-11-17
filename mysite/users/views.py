@@ -10,6 +10,7 @@ from .token import account_activation_token
 from .forms import LoginForm
 from .forms import UserUpdateForm
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register(request):
     form = CreateUserForm()
@@ -36,9 +37,12 @@ def register(request):
 
 
 def email_verification(request,uidb64,token):
-    unique_id = force_str(urlsafe_base64_decode(uidb64))
-    user = User.objects.get(pk=unique_id)
-    if user and account_activation_token.check_token(user,token):
+    try:
+        unique_id = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=unique_id)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user,token):
         user.is_active=True
         user.save()
         return redirect('email-verification-success')
@@ -75,6 +79,7 @@ def user_logout(request):
     logout(request)
     return redirect('index')
 
+@login_required
 def profile(request):
     
     if request.method =="POST":

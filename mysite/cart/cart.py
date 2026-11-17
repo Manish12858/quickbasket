@@ -1,5 +1,6 @@
 from myapp.models import Product
 from decimal import Decimal
+import copy
 class Cart():
     def __init__(self,request):
         self.session = request.session
@@ -18,7 +19,7 @@ class Cart():
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
-        cart = self.cart.copy()
+        cart = copy.deepcopy(self.cart)
 
         for product in products:
             cart[str(product.id)]['product']=product
@@ -34,7 +35,7 @@ class Cart():
 
 
     def add(self,product,product_qty):
-        product_id = product.id
+        product_id = str(product.id)
         if product_id in self.cart:
             self.cart[product_id]['qty']= product_qty
             
@@ -49,6 +50,11 @@ class Cart():
         if product_id in self.cart:
             del self.cart[product_id]
         self.session.modified=True
+
+    def clear(self):
+        self.session['cart'] = {}
+        self.cart = self.session['cart']
+        self.session.modified = True
 
     def update(self,product,qty):
         product_id = str(product)
