@@ -1,7 +1,31 @@
-target/
-.idea/
-*.iml
-.vscode/
-.DS_Store
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Django
+*.sqlite3
 *.log
+/mysite/staticfiles/
+# User-uploaded files (sample product images in media/images are tracked on purpose)
+/mysite/media/*
+!/mysite/media/images/
+/mysite/media/images/*
+!/mysite/media/images/mechkeyboard.jpg
+!/mysite/media/images/mechkeyboard_3NhZ5QI.jpg
+!/mysite/media/images/mechkeyboard_e05tF2l.jpg
+
+# Secrets
 .env
+
+# Editors / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
