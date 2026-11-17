@@ -12,13 +12,8 @@ env/
 *.sqlite3
 *.log
 /staticfiles/
-# User-uploaded files (sample product images in media/images are tracked on purpose)
-/media/*
-!/media/images/
-/media/images/*
-!/media/images/mechkeyboard.jpg
-!/media/images/mechkeyboard_3NhZ5QI.jpg
-!/media/images/mechkeyboard_e05tF2l.jpg
+# User-uploaded product images (sample images in media/samples are tracked)
+/media/images/
 
 # Secrets
 .env

@@ -3,12 +3,12 @@
     "model": "products.product",
     "pk": 1,
     "fields": {
-      "name": "Mechanical Keyboard",
-      "price": 3499.0,
-      "description": "Full-size mechanical keyboard with tactile switches and white backlight.",
-      "image": "images/mechkeyboard.jpg",
-      "slug": "mechanical-keyboard",
-      "stock": 10,
+      "name": "Full-Size Mechanical Keyboard",
+      "price": "3499.00",
+      "description": "104-key mechanical keyboard with tactile switches, white backlight and a detachable USB-C cable.",
+      "image": "samples/full-size-mechanical-keyboard.jpg",
+      "slug": "full-size-mechanical-keyboard",
+      "stock": 15,
       "active": true
     }
   },
@@ -16,12 +16,12 @@
     "model": "products.product",
     "pk": 2,
     "fields": {
-      "name": "Mechanical Switch Pack (35 pcs)",
-      "price": 899.0,
-      "description": "Pack of 35 hot-swappable linear switches for custom keyboards.",
-      "image": "images/mechkeyboard_3NhZ5QI.jpg",
-      "slug": "mechanical-switch-pack",
-      "stock": 10,
+      "name": "Compact 75% Mechanical Keyboard",
+      "price": "2799.00",
+      "description": "Space-saving 75% layout with hot-swappable switches, a volume knob, and Bluetooth plus wired modes.",
+      "image": "samples/compact-75-mechanical-keyboard.jpg",
+      "slug": "compact-75-mechanical-keyboard",
+      "stock": 8,
       "active": true
     }
   },
@@ -29,12 +29,51 @@
     "model": "products.product",
     "pk": 3,
     "fields": {
-      "name": "Compact 75% Mechanical Keyboard",
-      "price": 2799.0,
-      "description": "Space-saving 75% layout keyboard with detachable USB-C cable.",
-      "image": "images/mechkeyboard_e05tF2l.jpg",
-      "slug": "compact-mechanical-keyboard",
-      "stock": 5,
+      "name": "Wireless Mouse",
+      "price": "1199.00",
+      "description": "Lightweight 2.4 GHz wireless mouse with a 1600 DPI sensor and up to 12 months of battery life.",
+      "image": "samples/wireless-mouse.jpg",
+      "slug": "wireless-mouse",
+      "stock": 25,
+      "active": true
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+      "name": "Over-Ear Headphones",
+      "price": "2499.00",
+      "description": "Closed-back over-ear headphones with memory-foam cushions and a detachable 3.5 mm cable.",
+      "image": "samples/over-ear-headphones.jpg",
+      "slug": "over-ear-headphones",
+      "stock": 3,
+      "active": true
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+      "name": "Linear Switch Pack (35 pcs)",
+      "price": "899.00",
+      "description": "35 pre-lubed linear switches for hot-swappable keyboards, with a smooth 45 g actuation force.",
+      "image": "samples/linear-switch-pack.jpg",
+      "slug": "linear-switch-pack",
+      "stock": 40,
+      "active": true
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+      "name": "PBT Keycap Set",
+      "price": "1599.00",
+      "description": "Durable double-shot PBT keycaps in a lavender colourway, compatible with most MX-style keyboards.",
+      "image": "samples/pbt-keycap-set.jpg",
+      "slug": "pbt-keycap-set",
+      "stock": 0,
       "active": true
     }
   }

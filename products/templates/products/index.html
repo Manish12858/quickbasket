@@ -1,28 +1,43 @@
 {% extends 'base.html' %}
-<!--Comment-->
+{% load humanize %}
+{% block title %}{% if query %}Search: {{ query }}{% else %}Shop{% endif %}{% endblock %}
 {% block body %}
-<div>
-  <h1 class="text-2xl px-32 pt-10">Today's deals</h1>
-  <div class="px-32">
-    <hr class="border-t border-gray-300 my-6" />
+<div class="mb-6 flex items-end justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-900">
+      {% if query %}Results for “{{ query }}”{% else %}All products{% endif %}
+    </h1>
+    <p class="text-sm text-slate-500">{{ products|length }} product{{ products|length|pluralize }}</p>
   </div>
-  <div class="grid grid-cols-4 px-32 gap-6">
-    {% for product in products %}
-    <div class="rounded-lg shadow-lg p-4">
-      <img
-        class="rounded-md mb-4 w-80 h-80 object-cover mx-auto"
-        src="{{product.image.url}}"
-        alt=""
-      />
-      <a class="text-lg font-semibold" href="{{product.get_absolute_url}}"
-        >{{product.name}}</a
-      >
-      <p class="text-gray-600">{{product.description}}</p>
-      <p class="text-green-500 font-bold mt-2 text-lg">₹{{product.price}}</p>
-    </div>
-    {% endfor %}
-  </div>
+  {% if query %}<a href="{% url 'index' %}" class="text-sm font-medium text-indigo-600 hover:underline">Clear search</a>{% endif %}
 </div>
 
-<!--Comment-->
+{% if products %}
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  {% for product in products %}
+  <a href="{{ product.get_absolute_url }}" data-testid="product-card"
+     class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg">
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="aspect-[4/3] w-full object-cover" />
+    <div class="p-5">
+      <h2 class="font-semibold text-slate-900 group-hover:text-indigo-600">{{ product.name }}</h2>
+      <p class="mt-1 line-clamp-2 text-sm text-slate-500">{{ product.description }}</p>
+      <div class="mt-4 flex items-center justify-between">
+        <span class="text-lg font-bold text-slate-900">₹{{ product.price|floatformat:2|intcomma }}</span>
+        {% if product.in_stock %}
+        <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">In stock</span>
+        {% else %}
+        <span class="rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">Out of stock</span>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
+  <p class="text-lg font-medium">No products found.</p>
+  <p class="mt-1 text-slate-500">Try a different search term.</p>
+  <a href="{% url 'index' %}" class="mt-4 inline-block font-medium text-indigo-600 hover:underline">See all products</a>
+</div>
+{% endif %}
 {% endblock %}

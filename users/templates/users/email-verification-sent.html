@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-<!--Comment-->
+{% block title %}Check your email{% endblock %}
 {% block body %}
-<h1>The verification email has been sent, please check your email</h1>
+{% include 'partials/card_page.html' with title='Check your email' text='We have sent you a verification link. Open it to activate your account, then log in.' %}
 {% endblock %}

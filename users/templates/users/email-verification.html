@@ -1,5 +1,9 @@
-Hi, thank you for registering on our website. Please verify Your email by
-clicking the link below.
-<!---->
-http://{{domain}}{% url 'email-verification' uidb64=uid token=token %}
-<!---->
+Hi {{ user.username }},
+
+Thanks for signing up at QuickBasket. Please confirm your email address by opening the link below:
+
+{{ protocol }}://{{ domain }}{% url 'email-verification' uidb64=uid token=token %}
+
+If you didn't create this account, you can ignore this email.
+
+- The QuickBasket team

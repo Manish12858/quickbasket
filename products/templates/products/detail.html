@@ -1,71 +1,88 @@
-{% extends 'base.html' %} {% block body %}
-<!--Outermost Container-->
-<div class="max-w-7xl mx-auto grid grid-cols-3 gap-10">
-  <!--Product Image-->
-  <div class="col-span-1">
-    <img
-      class="w-80 h-80 rounded-lg border shadow-sm"
-      src="{{product.image.url}}"
-      alt=""
-    />
-  </div>
-  <!--Product Details-->
-  <div class="col-span-1 space-y-4">
-    <h1 class="text-2xl font-semibold text-gray-900">{{product.name}}</h1>
-    <div class="text-yellow-500">
-      ★★★★☆ <span class="text-gray-900"> (12,321 ratings)</span>
-    </div>
-    <p class="text-3xl font-bold text-green-500">₹{{product.price}}</p>
-    <p class="text-sm text-green-700 font-medium">Inclusive of all taxes</p>
-    <ul>
-      <li>{{product.description}}</li>
-    </ul>
-  </div>
-  <!--Buy Box-->
-  <div class="col-span-1 border rounded-lg p-6 space-y-4 shadow-md">
-    <p class="text-2xl font-semibold text-gray-900">₹{{product.price}}</p>
-    <div>
-      <select name="" id="select">
-        <option value="">1</option>
-        <option value="">2</option>
-        <option value="">3</option>
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block body %}
+<nav class="mb-6 text-sm text-slate-500">
+  <a href="{% url 'index' %}" class="hover:text-indigo-600">All products</a>
+  <span class="mx-1">/</span>
+  <span class="text-slate-700">{{ product.name }}</span>
+</nav>
+
+<div class="grid gap-10 md:grid-cols-2">
+  <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full rounded-2xl border border-slate-200 bg-white" />
+
+  <div>
+    <h1 class="text-3xl font-bold text-slate-900">{{ product.name }}</h1>
+    <p class="mt-4 text-3xl font-bold text-slate-900">₹{{ product.price|floatformat:2|intcomma }}</p>
+    <p class="text-sm text-slate-500">Inclusive of all taxes</p>
+    <p class="mt-6 leading-relaxed text-slate-700">{{ product.description|linebreaksbr }}</p>
+
+    {% if product.in_stock %}
+    <p class="mt-6 text-sm font-medium text-emerald-700">
+      In stock{% if product.stock <= 5 %} – only {{ product.stock }} left{% endif %}
+    </p>
+    <div class="mt-4 flex items-center gap-3">
+      <label for="qty" class="text-sm font-medium">Quantity</label>
+      <select id="qty" class="rounded-lg border border-slate-300 bg-white px-3 py-2">
+        {% for i in qty_range %}<option value="{{ i }}">{{ i }}</option>{% endfor %}
       </select>
     </div>
-    <p class="text-sm text-green-700">FREE delivery by tomorrow</p>
-    {% if product.stock %}
-    <p class="text-sm text-green-700">In stock</p>
+    <div class="mt-6 flex gap-3">
+      <button id="add-to-cart" type="button" class="flex-1 rounded-lg bg-amber-400 py-3 font-semibold text-slate-900 hover:bg-amber-500">
+        Add to cart
+      </button>
+      <button id="buy-now" type="button" class="flex-1 rounded-lg bg-slate-900 py-3 font-semibold text-white hover:bg-slate-700">
+        Buy now
+      </button>
+    </div>
+    <p id="cart-message" class="mt-3 hidden text-sm" role="status"></p>
     {% else %}
-    <p class="text-sm text-green-700">Out of stock</p>
+    <p class="mt-6 font-semibold text-red-600">Out of stock</p>
+    <p class="text-sm text-slate-500">This product is currently unavailable.</p>
     {% endif %}
-    <button
-      id="atc"
-      value="{{product.id}}"
-      class="w-full bg-yellow-400 text-black font-semibold py-2 rounded-lg"
-    >
-      Add to cart
-    </button>
-    <button class="w-full bg-gray-900 text-white font-semibold py-2 rounded-lg">
-      Buy Now
-    </button>
-    <p class="text-sm text-green-600">Sold by: ABC Official Store</p>
   </div>
 </div>
+
+{% if product.in_stock %}
 <script>
-  $(document).on("click", "#atc", function (e) {
-    console.log("Add to cart button clicked");
+  function showCartMessage(html, isError) {
+    $("#cart-message")
+      .removeClass("hidden text-emerald-700 text-red-600")
+      .addClass(isError ? "text-red-600" : "text-emerald-700")
+      .html(html);
+  }
+
+  function addToCart(onSuccess) {
     $.ajax({
       type: "POST",
-      url: '{% url "cart_add" %}',
+      url: "{% url 'cart_add' %}",
       data: {
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        product_id: $("#atc").val(),
-        product_quantity: $("#select option:selected").text(),
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        product_id: "{{ product.id }}",
+        product_quantity: $("#qty").val(),
       },
       success: function (json) {
-        console.log(json);
-        document.getElementById("cart-qty").textContent = json.qty;
+        $("#cart-qty").text(json.qty);
+        onSuccess(json);
       },
+      error: function (xhr) {
+        var message = (xhr.responseJSON && xhr.responseJSON.error) || "Could not add this product to your cart.";
+        showCartMessage($("<span>").text(message).html(), true);
+      },
+    });
+  }
+
+  $("#add-to-cart").on("click", function () {
+    addToCart(function () {
+      showCartMessage('Added to cart. <a class="font-medium underline" href="{% url 'cart-overview' %}">View cart</a>', false);
+    });
+  });
+
+  $("#buy-now").on("click", function () {
+    addToCart(function () {
+      window.location.href = "{% url 'checkout' %}";
     });
   });
 </script>
+{% endif %}
 {% endblock %}

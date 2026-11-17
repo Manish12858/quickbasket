@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block body %}
+{% if just_placed %}
+<div class="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center" data-testid="order-success">
+  <p class="text-2xl font-bold text-emerald-800">Thank you! Your order has been placed.</p>
+  <p class="mt-1 text-emerald-700">Order #{{ order.id }} · Cash on delivery</p>
+</div>
+{% endif %}
+
+<div class="mb-6 flex items-end justify-between">
+  <div>
+    <h1 class="text-2xl font-bold text-slate-900">Order #{{ order.id }}</h1>
+    <p class="text-sm text-slate-500">Placed on {{ order.created_at|date:"j M Y, g:i A" }}</p>
+  </div>
+  <a href="{% url 'my-orders' %}" class="text-sm font-medium text-indigo-600 hover:underline">All my orders</a>
+</div>
+
+<div class="grid gap-8 lg:grid-cols-3">
+  <section class="rounded-2xl border border-slate-200 bg-white p-6 lg:col-span-2">
+    <h2 class="text-lg font-semibold">Items</h2>
+    <ul class="mt-4 divide-y divide-slate-100">
+      {% for item in order.items.all %}
+      <li class="flex items-center gap-4 py-3">
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="h-14 w-14 rounded-lg object-cover" />
+        <span class="flex-1">{{ item.product.name }} <span class="text-slate-500">× {{ item.quantity }}</span></span>
+        <span class="font-medium">₹{{ item.total_price|floatformat:2|intcomma }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="mt-4 flex justify-between border-t border-slate-200 pt-4 text-lg font-bold">
+      <span>Total</span><span>₹{{ order.total_amount|floatformat:2|intcomma }}</span>
+    </div>
+  </section>
+
+  <aside class="h-fit space-y-6 rounded-2xl border border-slate-200 bg-white p-6">
+    <div>
+      <h2 class="font-semibold">Shipping to</h2>
+      <p class="mt-2 whitespace-pre-line text-sm text-slate-700">{{ order.shipping_address }}</p>
+    </div>
+    <div>
+      <h2 class="font-semibold">Payment</h2>
+      <p class="mt-2 text-sm text-slate-700">Cash on delivery · {% if order.is_paid %}Paid{% else %}Pay when delivered{% endif %}</p>
+    </div>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% comment %}Centered card used by account and status pages. Usage: {% include 'partials/card_page.html' with title=... text=... %}{% endcomment %}
+<div class="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+  <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full {% if tone == 'error' %}bg-red-100 text-red-600{% else %}bg-emerald-100 text-emerald-600{% endif %} text-2xl">
+    {% if tone == 'error' %}!{% else %}✓{% endif %}
+  </div>
+  <h1 class="text-xl font-bold">{{ title }}</h1>
+  <p class="mt-2 text-slate-600">{{ text }}</p>
+  {% if link_url %}
+  <a href="{{ link_url }}" class="mt-6 inline-block rounded-lg bg-indigo-600 px-5 py-2 font-medium text-white hover:bg-indigo-700">{{ link_text }}</a>
+  {% endif %}
+</div>

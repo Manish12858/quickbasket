@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-<!--Comment-->
+{% block title %}Email verified{% endblock %}
 {% block body %}
-<h1>Email was successfully verified</h1>
+{% url 'login' as login_url %}
+{% include 'partials/card_page.html' with title='Email verified' text='Your account is now active. You can log in and start shopping.' link_url=login_url link_text='Log in' %}
 {% endblock %}
