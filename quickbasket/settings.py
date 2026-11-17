@@ -139,6 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+SERVE_MEDIA = os.environ.get('DJANGO_SERVE_MEDIA', 'True').lower() == 'true'
 
 # Authentication
 LOGIN_URL = 'login'

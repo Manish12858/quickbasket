@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Install Playwright browser
+        run: python -m playwright install --with-deps chromium
+
+      - name: Check for missing migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Remember whether README screenshots exist
+        id: shots
+        run: |
+          if ls docs/screenshots/*.png >/dev/null 2>&1; then echo "exist=true" >> "$GITHUB_OUTPUT"; else echo "exist=false" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Run tests (unit + end-to-end)
+        env:
+          SCREENSHOTS_DIR: docs/screenshots
+        run: pytest -v
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: docs/screenshots/
+          if-no-files-found: ignore
+
+      # Commits the README screenshots the first time (or when the workflow is run manually)
+      - name: Commit screenshots
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || steps.shots.outputs.exist == 'false')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/screenshots
+          if git diff --cached --quiet; then
+            echo "Screenshots unchanged"
+          else
+            git commit -m "Update README screenshots"
+            git push
+          fi
