@@ -1,4 +1,4 @@
-# QuickBasket – E-commerce Web App (Python · Django)
+# QuickBasket - E-commerce web app (Python, Django)
 
 [![CI](https://github.com/Manish12858/quickbasket/actions/workflows/ci.yml/badge.svg)](https://github.com/Manish12858/quickbasket/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
@@ -235,7 +235,7 @@ What is tested:
 
 ## Author
 
-**Manish Kumar** – Python / Django developer
+**Manish Kumar** | Python / Django developer
 
 - GitHub: [@Manish12858](https://github.com/Manish12858)
 - Email: manishkumarjamia@gmail.com

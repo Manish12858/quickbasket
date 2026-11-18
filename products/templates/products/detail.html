@@ -19,7 +19,7 @@
 
     {% if product.in_stock %}
     <p class="mt-6 text-sm font-medium text-emerald-700">
-      In stock{% if product.stock <= 5 %} – only {{ product.stock }} left{% endif %}
+      In stock{% if product.stock <= 5 %}, only {{ product.stock }} left{% endif %}
     </p>
     <div class="mt-4 flex items-center gap-3">
       <label for="qty" class="text-sm font-medium">Quantity</label>
